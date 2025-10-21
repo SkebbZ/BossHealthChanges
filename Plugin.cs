@@ -14,8 +14,8 @@ namespace BossHealthChanger
 {
     public record ModMetadata : AbstractModMetadata
     {
-        public override string ModGuid { get; init; } = "com.SkebbZ.healthNormalizer";
-        public override string Name { get; init; } = "Enemy Health Normalizer";
+        public override string ModGuid { get; init; } = "com.SkebbZ.BossHealthChanger";
+        public override string Name { get; init; } = "Boss Health Changer";
         public override string Author { get; init; } = "SkebbZ";
         public override Version Version { get; init; } = new("1.0.0");
         public override Range SptVersion { get; init; } = new("~4.0.1");
@@ -45,14 +45,14 @@ namespace BossHealthChanger
 
         public Task OnLoad()
         {
-            logger.Info("Enemy Health Normalizer: Mod loading...");
+            logger.Info("[Boss Health Changer]: Mod loading...");
             try { 
                 ModifyBossHealth();
-                logger.Success("[Enemy Health Normalizer]: Finished applying health changes!");
+                logger.Success("[Boss Health Changer]: Finished applying health changes!");
             }
             catch (System.Exception ex)
             {
-                logger.Error($"[Enemy Health Normalizer]: An error occurred while applying health changes: {ex.Message}");
+                logger.Error($"[Boss Health Changer]: An error occurred while applying health changes: {ex.Message}");
             }
 
             return Task.CompletedTask;
@@ -82,12 +82,12 @@ namespace BossHealthChanger
                     if (bot.Value != null && bot.Value.BotHealth != null)
                     {
                         bot.Value.BotHealth.BodyParts = newHealthBodyParts;
-                        logger.Debug($"Changed health for boss: {bot.Key}");
+                        logger.Debug($"[Boss Health Changer]: Changed health for boss: {bot.Key}");
                         changedCount++;
                     }
                 }
             }
-            logger.Info($"Successfully applied standard player/PMC health values to {changedCount} boss/special bot types.");
+            logger.Info($"[Boss Health Changer]: Successfully applied standard player/PMC health values to {changedCount} boss/special bot types.");
         }
     }
 }
