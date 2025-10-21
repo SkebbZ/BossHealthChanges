@@ -34,21 +34,27 @@
   <ItemGroup>
     <Reference Include="SemanticVersioning">
       <HintPath>Q:\SPT\SPT\SemanticVersioning.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SPTarkov.Common">
       <HintPath>Q:\SPT\SPT\SPTarkov.Common.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SPTarkov.DI">
       <HintPath>Q:\SPT\SPT\SPTarkov.DI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SPTarkov.Reflection">
       <HintPath>Q:\SPT\SPT\SPTarkov.Reflection.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SPTarkov.Server.Assets">
       <HintPath>Q:\SPT\SPT\SPTarkov.Server.Assets.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SPTarkov.Server.Core">
       <HintPath>Q:\SPT\SPT\SPTarkov.Server.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 </Project>
