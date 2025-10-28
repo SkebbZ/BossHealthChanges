@@ -17,31 +17,34 @@ namespace BossHealthChanger
         public override string ModGuid { get; init; } = "com.SkebbZ.BossHealthChanger";
         public override string Name { get; init; } = "Boss Health Changer";
         public override string Author { get; init; } = "SkebbZ";
-        public override Version Version { get; init; } = new("1.0.0");
-        public override Range SptVersion { get; init; } = new("~4.0.1");
+        public override Version Version { get; init; } = new("1.0.1");
+        public override Range SptVersion { get; init; } = new("~4.0.0");
         public override string License { get; init; } = "MIT";
         public override List<string>? Contributors { get; init; } = null;
-        public override List<string>? Incompatibilities { get; init; } = null;
+        public override List<string>? Incompatibilities { get; init; } = new List<string>
+        {
+            "com.waldfee.spt.fairbothealth"
+        };
         public override Dictionary<string, Range>? ModDependencies { get; init; } = null;
         public override string? Url { get; init; } = null;
         public override bool? IsBundleMod { get; init; } = null;
     }
 
-    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+    [Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 999)]
     public class BossHealthChanger(
         ISptLogger<BossHealthChanger> logger,
         DatabaseService databaseService)
         : IOnLoad
     {
-        private static readonly List<string> BossRoles = new List<string>
-        {
-            "bossbully", "bossboar", "bossboarsniper", "bossgluhar", "bosskilla", "bosskillaagro", "bosskojaniy", "bosskolontay",
-            "bosssanitar", "bosstagilla", "bosstagillaagro", "bosszryachiy", "sectantpriest", "sectantwarrior", "bosspartisan",
-            "sectantprizrak", "followerbully", "followergluharassault", "followerboar", "followerboarclose1", "followerboarclose2",
-            "followergluharscout", "followergluharsecurity", "followergluharsnipe", "sectantpredvestnik", "sectantoni",
-            "followerkilla", "followersanitar", "followertagilla", "followerkojaniy", "followerkolontayassault", "followerkolontaysecurity",
-            "followerzryachiy", "gifter", "followerbigpipe", "followerbirdeye", "bossknight", "arenafighterevent", "crazyassaultevent", "cursedassault", "exusec", "pmcbot"
-        };
+        //private static readonly List<string> BossRoles = new List<string>
+        //{
+        //    "bossbully", "bossboar", "bossboarsniper", "bossgluhar", "bosskilla", "bosskillaagro", "bosskojaniy", "bosskolontay",
+        //    "bosssanitar", "bosstagilla", "bosstagillaagro", "tagillahelperagro", "bosszryachiy", "sectantpriest", "sectantwarrior", "bosspartisan",
+        //    "sectantprizrak", "followerbully", "followergluharassault", "followerboar", "followerboarclose1", "followerboarclose2",
+        //    "followergluharscout", "followergluharsecurity", "followergluharsnipe", "sectantpredvestnik", "sectantoni",
+        //    "followerkilla", "followersanitar", "followertagilla", "followerkojaniy", "followerkolontayassault", "followerkolontaysecurity",
+        //    "followerzryachiy", "gifter", "followerbigpipe", "followerbirdeye", "bossknight", "arenafighterevent", "crazyassaultevent", "cursedassault", "exusec", "pmcbot"
+        //};
 
         public Task OnLoad()
         {
@@ -77,14 +80,16 @@ namespace BossHealthChanger
             int changedCount = 0;
             foreach (var bot in botTypes)
             {
-                if (BossRoles.Contains(bot.Key.ToLower()))
+                //if (BossRoles.Contains(bot.Key.ToLower()))
+                if (bot.Key.ToLower().Contains("infected"))
                 {
-                    if (bot.Value != null && bot.Value.BotHealth != null)
-                    {
-                        bot.Value.BotHealth.BodyParts = newHealthBodyParts;
-                        logger.Debug($"[Boss Health Changer]: Changed health for boss: {bot.Key}");
-                        changedCount++;
-                    }
+                    logger.Debug($"[Boss Health Changer]: Skipped changing health for infected bot type: {bot.Key}");
+                }
+                else if (bot.Value != null && bot.Value.BotHealth != null)
+                {
+                    bot.Value.BotHealth.BodyParts = newHealthBodyParts;
+                    logger.Debug($"[Boss Health Changer]: Changed health for bot type: {bot.Key}");
+                    changedCount++;
                 }
             }
             logger.Info($"[Boss Health Changer]: Successfully applied standard player/PMC health values to {changedCount} boss/special bot types.");
